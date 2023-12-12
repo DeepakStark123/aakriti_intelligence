@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
+import 'package:aakriti_inteligence/widgets/header_widget.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
@@ -123,25 +124,10 @@ class _TradeScreenState extends State<TradeScreen> {
                       ],
                     ),
                   ),
-                  const Padding(
+                  const HeaderWidget(
+                    headerText: "Trade Screen",
+                    headerDiscription: "best trade here!",
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Trade Screen",
-                          style: TextStyle(color: Colors.white, fontSize: 40),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "best item here!",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      ],
-                    ),
                   ),
                   const SizedBox(height: 20),
                   Expanded(
@@ -198,10 +184,13 @@ class _TradeScreenState extends State<TradeScreen> {
                                                 child: TextFormField(
                                                   controller:
                                                       firstNameController,
+                                                  autovalidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
                                                   validator: (value) {
                                                     if (value == null ||
                                                         value.isEmpty) {
-                                                      return 'Please enter some text';
+                                                      return 'Please enter first name';
                                                     }
                                                     return null;
                                                   },
@@ -228,11 +217,13 @@ class _TradeScreenState extends State<TradeScreen> {
                                                 child: TextFormField(
                                                   controller:
                                                       lastNameController,
-                                                  obscureText: true,
+                                                  autovalidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
                                                   validator: (value) {
                                                     if (value == null ||
                                                         value.isEmpty) {
-                                                      return 'Please enter some text';
+                                                      return 'Please enter last name';
                                                     }
                                                     return null;
                                                   },
@@ -259,11 +250,13 @@ class _TradeScreenState extends State<TradeScreen> {
                                                                 .shade200))),
                                                 child: TextFormField(
                                                   controller: emailController,
-                                                  obscureText: true,
+                                                  autovalidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
                                                   validator: (value) {
                                                     if (value == null ||
                                                         value.isEmpty) {
-                                                      return 'Please enter some text';
+                                                      return 'Please enter email';
                                                     } else if (!RegExp(
                                                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                                         .hasMatch(value)) {
@@ -274,11 +267,10 @@ class _TradeScreenState extends State<TradeScreen> {
                                                   decoration:
                                                       const InputDecoration(
                                                           hintText:
-                                                              "Enter emial id",
-                                                          hintStyle:
-                                                              TextStyle(
-                                                                  color: Colors
-                                                                      .grey),
+                                                              "Enter email",
+                                                          hintStyle: TextStyle(
+                                                              color:
+                                                                  Colors.grey),
                                                           border:
                                                               InputBorder.none),
                                                 ),
@@ -294,11 +286,13 @@ class _TradeScreenState extends State<TradeScreen> {
                                                                 .shade200))),
                                                 child: TextFormField(
                                                   controller: phoneNoController,
-                                                  obscureText: true,
+                                                  autovalidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
                                                   validator: (value) {
                                                     if (value == null ||
                                                         value.isEmpty) {
-                                                      return 'Please enter some text';
+                                                      return 'Please enter phone number';
                                                     }
                                                     return null;
                                                   },

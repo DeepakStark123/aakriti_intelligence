@@ -7,7 +7,7 @@ import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
-import 'package:aakriti_inteligence/widgets/constant.dart';
+import 'package:aakriti_inteligence/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:aakriti_inteligence/widgets/custom_btn.dart';
 
@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   Utility utility = Utility();
   List<ProductData> mobileItems = [];
+  List<ProductData> totalItem = [];
   bool loading = true;
   LoginDataModel? profileData;
   String username = AppStrings.appName;
@@ -39,10 +40,13 @@ class _HomeScreenState extends State<HomeScreen> {
         endpoint: AppStrings.productsApi,
       );
       debugPrint('productsData Res: ${response.statusCode} ${response.body}');
+      mobileItems = [];
+      totalItem = [];
       if (response.statusCode == 200) {
         final productListModel =
             productListModelFromJson(response.body.toString());
         mobileItems = productListModel.data ?? [];
+        totalItem.addAll(mobileItems);
       } else {
         debugPrint("Error = ${response.statusCode} message = ${response.body}");
       }
@@ -51,6 +55,23 @@ class _HomeScreenState extends State<HomeScreen> {
     } finally {
       setLoading(false);
     }
+  }
+
+  void filterSearchResults(String query) {
+    List<ProductData> searchResults = [];
+    if (query.isNotEmpty) {
+      for (var item in mobileItems) {
+        if (item.name.toString().toLowerCase().contains(query.toLowerCase())) {
+          searchResults.add(item);
+        }
+      }
+    } else {
+      searchResults.addAll(totalItem);
+    }
+    setState(() {
+      mobileItems.clear();
+      mobileItems.addAll(searchResults);
+    });
   }
 
   getProfileData() async {
@@ -65,6 +86,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
+  searchItem() {}
+
   @override
   void initState() {
     productsData();
@@ -76,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _key,
-      drawer: DrawerScreen(
+      drawer: CustomNavigationDrawer(
         isLogin: profileData != null ? true : false,
         userProfileData: profileData,
       ),
@@ -130,6 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: SizedBox(
                             height: 50,
                             child: TextFormField(
+                              onChanged: (value) {
+                                filterSearchResults(value);
+                              },
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(Icons.search),
                                 hintText: 'Search items...',
@@ -177,61 +203,79 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: mobileItems.length,
                         itemBuilder: (context, index) {
                           final ProductData mobileItem = mobileItems[index];
-                          return Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: SizedBox(
-                                      child: Image(
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 0),
+                                )
+                              ],
+                            ),
+                            margin: const EdgeInsets.only(bottom: 8),
+                            padding: const EdgeInsets.all(16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
                                         image: NetworkImage(
                                           "${AppStrings.baseUrl}${mobileItem.img}",
                                         ),
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: SizedBox(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            mobileItem.name ?? "",
-                                            style:
-                                                const TextStyle(fontSize: 20),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Rs ${mobileItem.sp ?? "0"} /",
-                                                style: const TextStyle(
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: SizedBox(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          mobileItem.name ?? "",
+                                          style: const TextStyle(fontSize: 20),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Rs ${mobileItem.sp ?? "0"} /",
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              " ${mobileItem.mrp ?? "0"}",
+                                              style: const TextStyle(
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
                                                   fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              Text(
-                                                " ${mobileItem.mrp ?? "0"}",
-                                                style: const TextStyle(
-                                                    decoration: TextDecoration
-                                                        .lineThrough,
-                                                    fontSize: 16,
-                                                    decorationStyle:
-                                                        TextDecorationStyle
-                                                            .wavy),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              CustomElevatedButton(
+                                                  decorationStyle:
+                                                      TextDecorationStyle.wavy),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Expanded(
+                                              child: CustomElevatedButton(
                                                 backgroundColor:
                                                     AppColors.kprimaryColor,
                                                 child: const Text('View'),
@@ -245,10 +289,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   );
                                                 },
                                               ),
-                                              const SizedBox(
-                                                width: 2,
-                                              ),
-                                              CustomElevatedButton(
+                                            ),
+                                            const SizedBox(
+                                              width: 2,
+                                            ),
+                                            Expanded(
+                                              child: CustomElevatedButton(
                                                 backgroundColor:
                                                     AppColors.kbuttonColor,
                                                 child: const Text('Buy'),
@@ -264,10 +310,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   }
                                                 },
                                               ),
-                                              const SizedBox(
-                                                width: 2,
-                                              ),
-                                              CustomElevatedButton(
+                                            ),
+                                            const SizedBox(
+                                              width: 2,
+                                            ),
+                                            Expanded(
+                                              child: CustomElevatedButton(
                                                 backgroundColor:
                                                     AppColors.kaccentColor,
                                                 child: const Text('Sell'),
@@ -283,14 +331,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   }
                                                 },
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           );
                         },

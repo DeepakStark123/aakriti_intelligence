@@ -6,6 +6,7 @@ import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
+import 'package:aakriti_inteligence/widgets/header_widget.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
@@ -196,24 +197,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       ],
                     ),
                   ),
-                  const Padding(
+                  const HeaderWidget(
+                    headerText: "Forget Password",
+                    headerDiscription: "Reset your password",
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Forget Password",
-                          style: TextStyle(color: Colors.white, fontSize: 40),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Welcome Back",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      ],
-                    ),
                   ),
                   const SizedBox(height: 5),
                   Expanded(
@@ -281,6 +268,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                                     }
                                                     return null;
                                                   },
+                                                  autovalidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
                                                   decoration: const InputDecoration(
                                                       hintText:
                                                           "Get Verification Code On Email",
@@ -308,6 +298,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                                       return null;
                                                     },
                                                     controller: otpController,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    autovalidateMode:
+                                                        AutovalidateMode
+                                                            .onUserInteraction,
                                                     decoration:
                                                         const InputDecoration(
                                                       hintText: "Enter Otp",
@@ -336,6 +331,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                                     },
                                                     controller:
                                                         passwordController,
+                                                    autovalidateMode:
+                                                        AutovalidateMode
+                                                            .onUserInteraction,
                                                     decoration:
                                                         const InputDecoration(
                                                       hintText:
@@ -365,6 +363,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                                     },
                                                     controller:
                                                         resetPasswordController,
+                                                    autovalidateMode:
+                                                        AutovalidateMode
+                                                            .onUserInteraction,
                                                     decoration:
                                                         const InputDecoration(
                                                       hintText:

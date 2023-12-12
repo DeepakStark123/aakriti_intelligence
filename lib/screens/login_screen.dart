@@ -6,6 +6,7 @@ import 'package:aakriti_inteligence/screens/forget_password_screen.dart';
 import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
+import 'package:aakriti_inteligence/widgets/header_widget.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
@@ -245,24 +246,9 @@ class _LoginScreenState extends State<LoginScreen>
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Login",
-                          style: TextStyle(color: Colors.white, fontSize: 40),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Welcome Back",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      ],
-                    ),
+                  const HeaderWidget(
+                    headerText: "Login Screen",
+                    headerDiscription: "Login to continue",
                   ),
                   const SizedBox(height: 20),
                   Expanded(
@@ -343,10 +329,13 @@ class _LoginScreenState extends State<LoginScreen>
                                                                         .grey
                                                                         .shade200))),
                                                         child: TextFormField(
+                                                          autovalidateMode:
+                                                              AutovalidateMode
+                                                                  .onUserInteraction,
                                                           validator: (value) {
                                                             if (value == null ||
                                                                 value.isEmpty) {
-                                                              return 'Please enter some text';
+                                                              return 'Please enter email';
                                                             } else if (!RegExp(
                                                                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                                                 .hasMatch(
@@ -382,10 +371,13 @@ class _LoginScreenState extends State<LoginScreen>
                                                           validator: (value) {
                                                             if (value == null ||
                                                                 value.isEmpty) {
-                                                              return 'Please enter some text';
+                                                              return 'Please enter password';
                                                             }
                                                             return null;
                                                           },
+                                                          autovalidateMode:
+                                                              AutovalidateMode
+                                                                  .onUserInteraction,
                                                           controller:
                                                               passwordController,
                                                           obscureText: true,
@@ -440,6 +432,11 @@ class _LoginScreenState extends State<LoginScreen>
                                                   children: [
                                                     InkWell(
                                                       onTap: () {
+                                                        clearform(_tabController
+                                                                    .index ==
+                                                                0
+                                                            ? 1
+                                                            : 0);
                                                         Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
@@ -560,10 +557,13 @@ class _LoginScreenState extends State<LoginScreen>
                                                           controller:
                                                               getVerificationController,
                                                           readOnly: otpField,
+                                                          autovalidateMode:
+                                                              AutovalidateMode
+                                                                  .onUserInteraction,
                                                           validator: (value) {
                                                             if (value == null ||
                                                                 value.isEmpty) {
-                                                              return 'Please enter some text';
+                                                              return 'Please enter email';
                                                             } else if (!RegExp(
                                                                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                                                 .hasMatch(
@@ -603,6 +603,12 @@ class _LoginScreenState extends State<LoginScreen>
                                                                   TextFormField(
                                                                 controller:
                                                                     otpController,
+                                                                autovalidateMode:
+                                                                    AutovalidateMode
+                                                                        .onUserInteraction,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .number,
                                                                 validator:
                                                                     (value) {
                                                                   if (value ==
@@ -667,6 +673,11 @@ class _LoginScreenState extends State<LoginScreen>
                                                   children: [
                                                     InkWell(
                                                       onTap: () {
+                                                        clearform(_tabController
+                                                                    .index ==
+                                                                0
+                                                            ? 1
+                                                            : 0);
                                                         Navigator.push(
                                                           context,
                                                           MaterialPageRoute(

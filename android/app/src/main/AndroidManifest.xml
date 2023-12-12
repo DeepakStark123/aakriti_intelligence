@@ -32,3 +32,6 @@
             android:value="2" />
     </application>
 </manifest>
+
+
+  <!-- static const String baseUrl = "https://noqualification.in"; -->

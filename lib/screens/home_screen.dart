@@ -2,13 +2,13 @@ import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/models/products_model.dart';
 import 'package:aakriti_inteligence/screens/chart_screen.dart';
 import 'package:aakriti_inteligence/screens/drawer_screen.dart';
+import 'package:aakriti_inteligence/screens/trade_form.dart';
 import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
 import 'package:aakriti_inteligence/widgets/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:aakriti_inteligence/screens/login_screen.dart';
 import 'package:aakriti_inteligence/widgets/custom_btn.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -43,8 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
         final productListModel =
             productListModelFromJson(response.body.toString());
         mobileItems = productListModel.data ?? [];
-        // Utility.showCustomSnackbar(
-        //     context, productListModel.message ?? "Success", true);
       } else {
         debugPrint("Error = ${response.statusCode} message = ${response.body}");
       }
@@ -67,49 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
-  void showTransparentDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'Coming soon',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16.0),
-                const Text(
-                  'Stay tuned for exciting updates!',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-                const SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   void initState() {
     productsData();
@@ -121,7 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _key,
-      drawer: const DrawerScreen(),
+      drawer: DrawerScreen(
+        isLogin: profileData != null ? true : false,
+        userProfileData: profileData,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: globalPadding),
@@ -235,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   const SizedBox(
-                                    width: 10,
+                                    width: 8,
                                   ),
                                   Expanded(
                                     flex: 2,
@@ -276,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               CustomElevatedButton(
                                                 backgroundColor:
                                                     AppColors.kprimaryColor,
-                                                child: const Text('View Chart'),
+                                                child: const Text('View'),
                                                 onPressed: () {
                                                   Navigator.push(
                                                     context,
@@ -288,34 +246,40 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 },
                                               ),
                                               const SizedBox(
-                                                width: 4,
+                                                width: 2,
                                               ),
                                               CustomElevatedButton(
                                                 backgroundColor:
                                                     AppColors.kbuttonColor,
-                                                child: const Text('Buy Now'),
-                                                onPressed: () async {
-                                                  if (await Utility
-                                                          .getLogin() !=
-                                                      "") {
-                                                    if (context.mounted) {
-                                                      showTransparentDialog(
-                                                          context);
-                                                    }
-                                                  } else {
-                                                    if (context.mounted) {
-                                                      var res =
-                                                          await Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const LoginScreen(),
-                                                        ),
-                                                      );
-                                                      if (res == true) {
-                                                        productsData();
-                                                      }
-                                                    }
+                                                child: const Text('Buy'),
+                                                onPressed: () {
+                                                  if (context.mounted) {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const TradeScreen(),
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                              ),
+                                              const SizedBox(
+                                                width: 2,
+                                              ),
+                                              CustomElevatedButton(
+                                                backgroundColor:
+                                                    AppColors.kaccentColor,
+                                                child: const Text('Sell'),
+                                                onPressed: () {
+                                                  if (context.mounted) {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const TradeScreen(),
+                                                      ),
+                                                    );
                                                   }
                                                 },
                                               ),

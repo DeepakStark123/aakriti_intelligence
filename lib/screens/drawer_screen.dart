@@ -1,13 +1,45 @@
+import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/screens/about_us.dart';
 import 'package:aakriti_inteligence/screens/home_screen.dart';
+import 'package:aakriti_inteligence/screens/login_screen.dart';
 import 'package:aakriti_inteligence/screens/privacy_policy.dart';
 import 'package:aakriti_inteligence/screens/term_condition.dart';
+import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
 import 'package:flutter/material.dart';
 
-class DrawerScreen extends StatelessWidget {
-  const DrawerScreen({super.key});
+class DrawerScreen extends StatefulWidget {
+  const DrawerScreen({super.key, required this.isLogin, this.userProfileData});
+  final bool isLogin;
+  final LoginDataModel? userProfileData;
+
+  @override
+  State<DrawerScreen> createState() => _DrawerScreenState();
+}
+
+class _DrawerScreenState extends State<DrawerScreen> {
+  String userName = AppStrings.appName;
+  String userEmail = "Welcom Back";
+
+  getDefaultData() {
+    if (widget.userProfileData != null) {
+      var firstName = widget.userProfileData?.user!.fname ?? "";
+      var lastName = widget.userProfileData?.user!.lname ?? "";
+      userEmail = widget.userProfileData?.user!.lname ?? "";
+      userName = firstName + lastName;
+    } else {
+      userName = AppStrings.appName;
+      userEmail = "Welcom Back";
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getDefaultData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +49,25 @@ class DrawerScreen extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
-            decoration: const BoxDecoration(color: AppColors.kappBarColorlight),
-            child: const Column(
+            decoration: const BoxDecoration(color: AppColors.kprimaryColor),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 40,
                   backgroundImage: AssetImage('images/logo.png'),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
-                  'Ramesh Das',
-                  style: TextStyle(
+                  userName,
+                  style: const TextStyle(
                     color: AppColors.kwhiteColor,
                     fontSize: 18,
                   ),
                 ),
                 Text(
-                  'ramesh123@gmail.com',
-                  style: TextStyle(
+                  userEmail,
+                  style: const TextStyle(
                     color: AppColors.kwhiteColor,
                     fontSize: 14,
                   ),
@@ -107,17 +139,27 @@ class DrawerScreen extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
+            leading: Icon(widget.isLogin ? Icons.logout : Icons.login),
+            title: Text(widget.isLogin ? 'Logout' : 'Login'),
             onTap: () async {
-              await Utility.clearPreferenceData();
-              if (context.mounted) {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const HomeScreen()),
-                  ModalRoute.withName('/'),
-                );
+              if (widget.isLogin) {
+                await Utility.clearPreferenceData();
+                if (context.mounted) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const HomeScreen()),
+                    ModalRoute.withName('/'),
+                  );
+                }
+              } else {
+                if (context.mounted) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const LoginScreen()),
+                  );
+                }
               }
             },
           ),

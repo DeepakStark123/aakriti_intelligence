@@ -97,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       key: _key,
       drawer: CustomNavigationDrawer(
@@ -204,6 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           final ProductData mobileItem = mobileItems[index];
                           return Container(
+                            height: screenHeight * 0.2,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: const BorderRadius.all(
@@ -246,10 +248,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           mobileItem.name ?? "",
-                                          style: const TextStyle(fontSize: 20),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
+                                        const SizedBox(
+                                          height: 2,
                                         ),
                                         Row(
                                           children: [
@@ -270,6 +279,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       TextDecorationStyle.wavy),
                                             ),
                                           ],
+                                        ),
+                                        const SizedBox(
+                                          height: 2,
                                         ),
                                         Row(
                                           mainAxisSize: MainAxisSize.min,

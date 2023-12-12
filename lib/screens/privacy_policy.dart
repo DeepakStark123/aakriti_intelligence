@@ -71,16 +71,16 @@ class _PrivacyAndPolicyState extends State<PrivacyAndPolicy> {
               child: CircularProgressIndicator(),
             )
           : SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: globalPadding, vertical: 2),
-          child: HtmlWidget(
-            htmlData,
-            renderMode: RenderMode.column,
-            textStyle: const TextStyle(fontSize: 14),
-          ),
-        ),
-      ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: globalPadding, vertical: 2),
+                child: HtmlWidget(
+                  htmlData,
+                  renderMode: RenderMode.column,
+                  textStyle: const TextStyle(fontSize: 14),
+                ),
+              ),
+            ),
     );
   }
 }

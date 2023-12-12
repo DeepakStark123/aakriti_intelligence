@@ -43,16 +43,20 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
-            decoration: const BoxDecoration(color: AppColors.kprimaryColor),
+            decoration: const BoxDecoration(color: AppColors.kappBarColorlight),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(
+                  height: screenHeight * 0.02,
+                ),
                 const CircleAvatar(
                   radius: 40,
                   backgroundImage: AssetImage('images/logo.png'),

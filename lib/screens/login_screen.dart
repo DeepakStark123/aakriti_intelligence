@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:aakriti_inteligence/models/generate_otp_model.dart';
 import 'package:aakriti_inteligence/models/login_data_model.dart';
-import 'package:aakriti_inteligence/screens/forget_password.dart';
+import 'package:aakriti_inteligence/screens/forget_password_screen.dart';
 import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen>
     };
     try {
       final response = await ApiService.postApi(
-        endpoint: AppStrings.loginWithPassword,
+        endpoint: AppStrings.loginWithPasswordApi,
         body: data,
       );
       debugPrint(
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen>
     var data = {"email": email.trim()};
     try {
       final response = await ApiService.postApi(
-        endpoint: AppStrings.generateOtp,
+        endpoint: AppStrings.generateOtpApi,
         body: data,
       );
       debugPrint('GererateOtp Res: ${response.statusCode} ${response.body}');
@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen>
     };
     try {
       final response = await ApiService.postApi(
-        endpoint: AppStrings.loginWithOpt,
+        endpoint: AppStrings.loginWithOptApi,
         body: data,
       );
       debugPrint('GererateOtp Res: ${response.statusCode} ${response.body}');

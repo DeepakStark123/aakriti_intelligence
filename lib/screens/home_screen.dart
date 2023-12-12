@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 50,
                           margin: const EdgeInsets.only(left: 10),
                           decoration: BoxDecoration(
-                            color: AppColors.kprimaryColor,
+                            color: AppColors.kbuttonColor,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: InkWell(

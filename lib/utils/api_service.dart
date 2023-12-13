@@ -9,10 +9,10 @@ class ApiService {
 
   static Future<Response> getApi(
       {required String endpoint, Map<String, String>? headers}) async {
-    var url = "$baseUrl/$endpoint";
+    var url = "$baseUrl$endpoint";
     debugPrint("URL = $url");
     final response = await http.get(
-      Uri.parse('$baseUrl/$endpoint'),
+      Uri.parse('$baseUrl$endpoint'),
       headers: headers ?? {'Content-Type': 'application/json'},
     );
     return response;
@@ -26,7 +26,7 @@ class ApiService {
     var url = "$baseUrl/$endpoint";
     debugPrint("URL = $url");
     final response = await http.post(
-      Uri.parse('$baseUrl/$endpoint'),
+      Uri.parse('$baseUrl$endpoint'),
       body: jsonEncode(body),
       headers: headers ?? {'Content-Type': 'application/json'},
     );

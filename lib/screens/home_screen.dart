@@ -2,14 +2,17 @@ import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/models/products_model.dart';
 import 'package:aakriti_inteligence/screens/chart_screen.dart';
 import 'package:aakriti_inteligence/screens/drawer_screen.dart';
+import 'package:aakriti_inteligence/screens/line_chart_sample.dart';
 import 'package:aakriti_inteligence/screens/trade_form.dart';
 import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
 import 'package:aakriti_inteligence/utils/constant.dart';
+import 'package:aakriti_inteligence/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:aakriti_inteligence/widgets/custom_btn.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -97,7 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       key: _key,
       drawer: CustomNavigationDrawer(
@@ -110,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 12),
+                margin: EdgeInsets.symmetric(vertical: 12.sp),
                 child: Column(
                   children: [
                     Row(
@@ -119,21 +121,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Hello welcome",
-                              style: TextStyle(
-                                color: Colors.black38,
-                                fontSize: globalNormalTextSize14,
-                              ),
+                            const CustomTextWidget(
+                              text: "Hello welcome",
+                              color: Colors.black38,
                             ),
-                            Text(
-                              username.toString(),
+                            CustomTextWidget(
+                              text: username.toString(),
+                              color: Colors.black,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: globalNormalTextSize16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
                           ],
                         ),
@@ -152,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Expanded(
                           child: SizedBox(
-                            height: 50,
+                            height: 50.sp,
                             child: TextFormField(
                               onChanged: (value) {
                                 filterSearchResults(value);
@@ -172,8 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Container(
-                          height: 50,
-                          width: 50,
+                          height: 50.sp,
+                          width: 50.sp,
                           margin: const EdgeInsets.only(left: 10),
                           decoration: BoxDecoration(
                             color: AppColors.kbuttonColor,
@@ -205,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           final ProductData mobileItem = mobileItems[index];
                           return Container(
-                            height: screenHeight * 0.2,
+                            height: 0.21.sh,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: const BorderRadius.all(
@@ -221,14 +218,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                             margin: const EdgeInsets.only(bottom: 8),
-                            padding: const EdgeInsets.all(16),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16.sp, vertical: 8.sp),
                             child: Row(
                               children: [
                                 Expanded(
                                   flex: 1,
                                   child: Container(
-                                    height: 100,
-                                    width: 100,
+                                    height: 100.sp,
+                                    width: 100.sp,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: NetworkImage(
@@ -251,32 +249,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          mobileItem.name ?? "",
+                                        CustomTextWidget(
+                                          text: mobileItem.name ?? "",
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(fontSize: 18),
+                                          fontSize: 18,
                                         ),
-                                        const SizedBox(
-                                          height: 2,
+                                        SizedBox(
+                                          height: 2.sp,
                                         ),
                                         Row(
                                           children: [
-                                            Text(
-                                              "Rs ${mobileItem.sp ?? "0"} /",
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                            CustomTextWidget(
+                                              text:
+                                                  "Rs ${mobileItem.sp ?? "0"} /",
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            Text(
-                                              " ${mobileItem.mrp ?? "0"}",
-                                              style: const TextStyle(
-                                                  decoration: TextDecoration
-                                                      .lineThrough,
-                                                  fontSize: 16,
-                                                  decorationStyle:
-                                                      TextDecorationStyle.wavy),
+                                            CustomTextWidget(
+                                              text: " ${mobileItem.mrp ?? "0"}",
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              fontSize: 16,
+                                              decorationStyle:
+                                                  TextDecorationStyle.wavy,
                                             ),
                                           ],
                                         ),
@@ -290,13 +286,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                               child: CustomElevatedButton(
                                                 backgroundColor:
                                                     AppColors.kprimaryColor,
-                                                child: const Text('View'),
+                                                child: const CustomTextWidget(
+                                                  text: "View",
+                                                  color: AppColors.kwhiteColor,
+                                                ),
                                                 onPressed: () {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          MycartScreen(),
+                                                          LineChartSample(),
+                                                      // MycartScreen(),
                                                     ),
                                                   );
                                                 },
@@ -309,7 +309,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               child: CustomElevatedButton(
                                                 backgroundColor:
                                                     AppColors.kbuttonColor,
-                                                child: const Text('Buy'),
+                                                child: const CustomTextWidget(
+                                                  text: "Buy",
+                                                  color: AppColors.kwhiteColor,
+                                                ),
                                                 onPressed: () {
                                                   if (context.mounted) {
                                                     Navigator.push(
@@ -330,7 +333,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               child: CustomElevatedButton(
                                                 backgroundColor:
                                                     AppColors.kaccentColor,
-                                                child: const Text('Sell'),
+                                                child: const CustomTextWidget(
+                                                  text: "Sell",
+                                                  color: AppColors.kwhiteColor,
+                                                ),
                                                 onPressed: () {
                                                   if (context.mounted) {
                                                     Navigator.push(

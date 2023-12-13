@@ -3,7 +3,9 @@ import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
 import 'package:aakriti_inteligence/utils/constant.dart';
+import 'package:aakriti_inteligence/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class AboutUsScreen extends StatefulWidget {
@@ -63,7 +65,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("About-Us"),
+        title: const CustomTextWidget(
+          text: "About-Us",
+        ),
       ),
       body: loading
           ? const Center(
@@ -78,7 +82,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                 child: HtmlWidget(
                   htmlData,
                   renderMode: RenderMode.column,
-                  textStyle: const TextStyle(fontSize: 14),
+                  textStyle: TextStyle(fontSize: 14.sp),
                 ),
               ),
             ),

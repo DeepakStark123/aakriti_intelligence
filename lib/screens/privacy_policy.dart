@@ -2,6 +2,7 @@ import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
 import 'package:aakriti_inteligence/utils/constant.dart';
+import 'package:aakriti_inteligence/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
@@ -64,7 +65,9 @@ class _PrivacyAndPolicyState extends State<PrivacyAndPolicy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Privacy & Policy"),
+        title: const CustomTextWidget(
+          text: "Privacy & Policy",
+        ),
       ),
       body: loading
           ? const Center(

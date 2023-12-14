@@ -6,6 +6,7 @@ class AppStrings {
   static const String loginWithOptApi = "/api/auth/login-with-otp/";
   static const String loginWithPasswordApi = "/api/auth/login-with-password/";
   static const String forgetPasswordApi = "/api/auth/login-with-password/";
+  static const String profileUpdateApi = "/api/auth/update/";
   static const String productsApi = "/api/product/all-products/";
   static const String aboutUsApi = "/api/about/us/";
   static const String termAndConditionApi = "/api/about/term-of-use/";

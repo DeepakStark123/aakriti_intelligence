@@ -23,7 +23,7 @@ class ApiService {
     required Object body,
     Map<String, String>? headers,
   }) async {
-    var url = "$baseUrl/$endpoint";
+    var url = "$baseUrl$endpoint";
     debugPrint("URL = $url");
     final response = await http.post(
       Uri.parse('$baseUrl$endpoint'),

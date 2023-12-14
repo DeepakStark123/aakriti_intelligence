@@ -1,9 +1,8 @@
 import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/models/products_model.dart';
-import 'package:aakriti_inteligence/screens/chart_screen.dart';
 import 'package:aakriti_inteligence/screens/drawer_screen.dart';
 import 'package:aakriti_inteligence/screens/line_chart_sample.dart';
-import 'package:aakriti_inteligence/screens/trade_form.dart';
+import 'package:aakriti_inteligence/screens/buy_sell_screen.dart';
 import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
@@ -319,7 +318,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const TradeScreen(),
+                                                            BuySellScreen(
+                                                                isBuy: true,
+                                                                productId:
+                                                                    mobileItem
+                                                                            .id ??
+                                                                        0),
                                                       ),
                                                     );
                                                   }
@@ -343,7 +347,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const TradeScreen(),
+                                                            BuySellScreen(
+                                                          isBuy: false,
+                                                          productId:
+                                                              mobileItem.id ??
+                                                                  0,
+                                                        ),
                                                       ),
                                                     );
                                                   }

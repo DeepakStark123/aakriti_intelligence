@@ -1,18 +1,24 @@
 import 'dart:io';
 import 'package:aakriti_inteligence/models/login_data_model.dart';
+import 'package:aakriti_inteligence/utils/api_service.dart';
+import 'package:aakriti_inteligence/utils/app_string.dart';
+import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
+import 'package:aakriti_inteligence/widgets/custom_btn.dart';
 import 'package:aakriti_inteligence/widgets/header_widget.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
-class TradeScreen extends StatefulWidget {
-  const TradeScreen({super.key});
+class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({
+    super.key,
+  });
 
   @override
-  State<TradeScreen> createState() => _TradeScreenState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _TradeScreenState extends State<TradeScreen> {
+class _EditProfileScreenState extends State<EditProfileScreen> {
   bool pageLoading = true;
   bool isBtnClicked = false;
   Utility utility = Utility();
@@ -30,34 +36,48 @@ class _TradeScreenState extends State<TradeScreen> {
     });
   }
 
-  // getInitilaData() async {
-  //   setLoading(true);
-  //   try {
-  //     final response = await ApiService.getApi(
-  //       endpoint: AppStrings.privacyPolicyApi,
-  //     );
-  //     debugPrint(
-  //         'privacyPolicyData Res: ${response.statusCode} ${response.body}');
-  //     if (response.statusCode == 200) {
-  //       final res = privacyPolicyModelFromJson(response.body.toString());
-  //       if (res.status == 200) {
-  //         if (context.mounted) {
-  //           htmlData = res.data!.description ?? """<p>No Data Found</p>""";
-  //         }
-  //       } else {
-  //         if (context.mounted) {
-  //           Utility.showCustomSnackbar(context, res.message ?? "Fail", false);
-  //         }
-  //       }
-  //     } else {
-  //       debugPrint("Error = ${response.statusCode} message = ${response.body}");
-  //     }
-  //   } catch (e) {
-  //     debugPrint('Exception Caught: $e');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
+  //-----Edit-Profile-----------------
+  editProfile({
+    required String fname,
+    required String lname,
+    required String phoneNo,
+    required String email,
+  }) async {
+    setLoading(true);
+    var data = {
+      "fname": fname.trim(),
+      "lname": lname.trim(),
+      "phone": phoneNo.trim(),
+      "email": email.trim(),
+    };
+    try {
+      final response = await ApiService.postApi(
+        endpoint: AppStrings.profileUpdateApi,
+        body: data,
+      );
+      debugPrint('Edit Profile Res: ${response.statusCode} ${response.body}');
+      if (response.statusCode == 200) {
+        var res = loginDataModelFromJson(response.body.toString());
+        if (res.status == 200) {
+          if (context.mounted) {
+            Utility.showCustomSnackbar(context, res.message ?? "Success", true);
+          }
+        } else {
+          if (context.mounted) {
+            Utility.showCustomSnackbar(context, res.message ?? "Fail", false);
+          }
+        }
+      } else {
+        debugPrint("Error = ${response.statusCode} message = ${response.body}");
+      }
+    } catch (e) {
+      debugPrint('Exception Caught: $e');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+//-
 
   getUserDaata() async {
     setLoading(true);
@@ -125,8 +145,8 @@ class _TradeScreenState extends State<TradeScreen> {
                     ),
                   ),
                   const HeaderWidget(
-                    headerText: "Trade Screen",
-                    headerDiscription: "best trade here!",
+                    headerText: "Edit Profile Screen",
+                    headerDiscription: "Update your profile",
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
                   ),
                   const SizedBox(height: 20),
@@ -319,7 +339,9 @@ class _TradeScreenState extends State<TradeScreen> {
                                             const Duration(milliseconds: 1000),
                                         child: SizedBox(
                                           height: 50,
-                                          child: ElevatedButton(
+                                          child: CustomElevatedButton(
+                                            backgroundColor:
+                                                AppColors.kbuttonColor,
                                             onPressed: () {
                                               if (_formKey.currentState!
                                                   .validate()) {
@@ -328,7 +350,7 @@ class _TradeScreenState extends State<TradeScreen> {
                                             },
                                             child: const Center(
                                               child: Text(
-                                                "Submit",
+                                                "Update",
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:

@@ -1,5 +1,7 @@
+import 'package:aakriti_inteligence/widgets/custom_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LineChartSample extends StatelessWidget {
   LineChartSample({super.key});
@@ -14,57 +16,69 @@ class LineChartSample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: LineChart(
-        LineChartData(
-          // titlesData: FlTitlesData(
-          //   leftTitles: const AxisTitles(
-          //       sideTitles: SideTitles(reservedSize: 44, showTitles: true)),
-          //   bottomTitles: AxisTitles(
-          //     sideTitles: SideTitles(
-          //       showTitles: true,
-          //       reservedSize: 22,
-          //       getTitlesWidget: (value, meta) {
-          //         return data[value.toInt()]["date"];
-          //       },
-          //     ),
-          //   ),
-          // ),
-          titlesData: FlTitlesData(
-            show: true,
-            topTitles: const AxisTitles(
-                sideTitles: SideTitles(reservedSize: 30, showTitles: false)),
-            rightTitles: const AxisTitles(
-                sideTitles: SideTitles(reservedSize: 44, showTitles: false)),
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 22,
-                  getTitlesWidget: ((value, meta) {
-                    return Text(data[value.toInt()]["date"].substring(0, 10));
-                  })),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 0.05.sh,
             ),
-          ),
-          gridData: const FlGridData(
-            show: true,
-            horizontalInterval: 1.0,
-          ),
-          borderData: FlBorderData(
-            show: true,
-          ),
-          minX: 0,
-          maxX: data.length.toDouble() - 1,
-          minY: 0,
-          maxY: getMaxYValue(),
-          lineBarsData: [
-            LineChartBarData(
-              spots: getSpots(),
-              isCurved: true,
-              color: Colors.blue,
-              dotData: const FlDotData(show: false),
-              belowBarData: BarAreaData(show: false),
+            SizedBox(
+              height: 0.6.sh,
+              child: LineChart(
+                LineChartData(
+                  titlesData: FlTitlesData(
+                    show: true,
+                    topTitles: const AxisTitles(
+                        sideTitles:
+                            SideTitles(reservedSize: 30, showTitles: false)),
+                    rightTitles: const AxisTitles(
+                        sideTitles:
+                            SideTitles(reservedSize: 44, showTitles: false)),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 22,
+                          getTitlesWidget: ((value, meta) {
+                            return Text(
+                                data[value.toInt()]["date"].substring(0, 10));
+                          })),
+                    ),
+                  ),
+                  gridData: const FlGridData(
+                    show: true,
+                    horizontalInterval: 1.0,
+                  ),
+                  borderData: FlBorderData(
+                    show: true,
+                  ),
+                  minX: 0,
+                  maxX: data.length.toDouble() - 1,
+                  minY: 0,
+                  maxY: getMaxYValue(),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: getSpots(),
+                      isCurved: true,
+                      color: Colors.blue,
+                      dotData: const FlDotData(show: false),
+                      belowBarData: BarAreaData(show: false),
+                    ),
+                  ],
+                ),
+              ),
             ),
+            SizedBox(
+              height: 0.05.sh,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: CustomElevatedButton(
+                child: const Text("Create price"),
+                onPressed: () {},
+              ),
+            )
           ],
         ),
       ),

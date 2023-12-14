@@ -1,8 +1,7 @@
 import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/models/products_model.dart';
-import 'package:aakriti_inteligence/screens/chart_screen.dart';
 import 'package:aakriti_inteligence/screens/drawer_screen.dart';
-import 'package:aakriti_inteligence/screens/line_chart_sample.dart';
+import 'package:aakriti_inteligence/screens/my_line_chart.dart';
 import 'package:aakriti_inteligence/screens/trade_form.dart';
 import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
@@ -180,8 +179,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             onTap: () {
                               _key.currentState!.openDrawer();
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.menu,
+                              size: globalIconSize,
                               color: AppColors.kwhiteColor,
                             ),
                           ),
@@ -282,73 +282,67 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Expanded(
-                                              child: CustomElevatedButton(
-                                                backgroundColor:
-                                                    AppColors.kprimaryColor,
-                                                child: const CustomTextWidget(
-                                                  text: "View",
-                                                  color: AppColors.kwhiteColor,
-                                                ),
-                                                onPressed: () {
+                                            CustomElevatedButton(
+                                              backgroundColor:
+                                                  AppColors.kprimaryColor,
+                                              child: const CustomTextWidget(
+                                                text: "View",
+                                                color: AppColors.kwhiteColor,
+                                              ),
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const MyLineChart(),
+                                                    // MycartScreen(),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            const SizedBox(
+                                              width: 2,
+                                            ),
+                                            CustomElevatedButton(
+                                              backgroundColor:
+                                                  AppColors.kbuttonColor,
+                                              child: const CustomTextWidget(
+                                                text: "Buy",
+                                                color: AppColors.kwhiteColor,
+                                              ),
+                                              onPressed: () {
+                                                if (context.mounted) {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          LineChartSample(),
-                                                      // MycartScreen(),
+                                                          const TradeScreen(),
                                                     ),
                                                   );
-                                                },
-                                              ),
+                                                }
+                                              },
                                             ),
                                             const SizedBox(
                                               width: 2,
                                             ),
-                                            Expanded(
-                                              child: CustomElevatedButton(
-                                                backgroundColor:
-                                                    AppColors.kbuttonColor,
-                                                child: const CustomTextWidget(
-                                                  text: "Buy",
-                                                  color: AppColors.kwhiteColor,
-                                                ),
-                                                onPressed: () {
-                                                  if (context.mounted) {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const TradeScreen(),
-                                                      ),
-                                                    );
-                                                  }
-                                                },
+                                            CustomElevatedButton(
+                                              backgroundColor:
+                                                  AppColors.kaccentColor,
+                                              child: const CustomTextWidget(
+                                                text: "Sell",
+                                                color: AppColors.kwhiteColor,
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              width: 2,
-                                            ),
-                                            Expanded(
-                                              child: CustomElevatedButton(
-                                                backgroundColor:
-                                                    AppColors.kaccentColor,
-                                                child: const CustomTextWidget(
-                                                  text: "Sell",
-                                                  color: AppColors.kwhiteColor,
-                                                ),
-                                                onPressed: () {
-                                                  if (context.mounted) {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const TradeScreen(),
-                                                      ),
-                                                    );
-                                                  }
-                                                },
-                                              ),
+                                              onPressed: () {
+                                                if (context.mounted) {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const TradeScreen(),
+                                                    ),
+                                                  );
+                                                }
+                                              },
                                             ),
                                           ],
                                         ),

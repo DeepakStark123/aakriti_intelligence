@@ -8,6 +8,7 @@ import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
 import 'package:aakriti_inteligence/widgets/custom_btn.dart';
+import 'package:aakriti_inteligence/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class DrawerScreen extends StatefulWidget {
@@ -88,7 +89,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.home),
-                    title: const Text('Home'),
+                    title: const CustomTextWidget(
+                      text: "Home",
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -96,7 +99,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   const Divider(),
                   ListTile(
                     leading: const Icon(Icons.dvr_sharp),
-                    title: const Text('Term & Conditions'),
+                    title: const CustomTextWidget(
+                      text: 'Term & Conditions',
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -109,7 +114,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   const Divider(),
                   ListTile(
                     leading: const Icon(Icons.privacy_tip),
-                    title: const Text('Privacy & Policy'),
+                    title: const CustomTextWidget(
+                      text: 'Privacy & Policy',
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -122,7 +129,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   const Divider(),
                   ListTile(
                     leading: const Icon(Icons.settings),
-                    title: const Text('Setting & Profile'),
+                    title: const CustomTextWidget(
+                      text: 'Setting & Profile',
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -130,7 +139,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   const Divider(),
                   ListTile(
                     leading: const Icon(Icons.info_outlined),
-                    title: const Text('About Us'),
+                    title: const CustomTextWidget(
+                      text: 'About Us',
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -143,7 +154,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   const Divider(),
                   ListTile(
                     leading: const Icon(Icons.phone_in_talk_outlined),
-                    title: const Text('Contact Support'),
+                    title: const CustomTextWidget(
+                      text: 'Contact Support',
+                    ),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -152,7 +165,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
               ),
               ListTile(
                 leading: Icon(widget.isLogin ? Icons.logout : Icons.login),
-                title: Text(widget.isLogin ? 'Logout' : 'Login'),
+                title: CustomTextWidget(
+                  text: widget.isLogin ? 'Logout' : 'Login',
+                ),
                 onTap: () async {
                   if (widget.isLogin) {
                     await Utility.clearPreferenceData();
@@ -260,17 +275,13 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                       backgroundImage: AssetImage('images/logo.png'),
                     ),
                     const SizedBox(height: 10),
-                    Text(
-                      userName,
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
+                    CustomTextWidget(
+                      text: userName,
+                      fontSize: 18,
                     ),
-                    Text(
-                      userEmail,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
+                    CustomTextWidget(
+                      text: userEmail,
+                      fontSize: 14,
                     ),
                     SizedBox(
                       height: deviceHeight * 0.02,
@@ -356,7 +367,10 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                       width: double.infinity,
                       child: CustomElevatedButton(
                         backgroundColor: AppColors.kbuttonColor,
-                        child: Text(widget.isLogin ? 'Logout' : 'Login'),
+                        child: CustomTextWidget(
+                          text: widget.isLogin ? 'Logout' : 'Login',
+                          color: AppColors.kwhiteColor,
+                        ),
                         onPressed: () async {
                           if (widget.isLogin) {
                             await Utility.clearPreferenceData();
@@ -392,7 +406,9 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    child: Text("Version 1.0.0"),
+                    child: CustomTextWidget(
+                      text: "Version 1.0.0",
+                    ),
                   ),
                   SizedBox(
                     height: deviceHeight * 0.02,

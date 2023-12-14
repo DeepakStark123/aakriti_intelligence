@@ -7,6 +7,7 @@ class AppStrings {
   static const String loginWithPasswordApi = "/api/auth/login-with-password/";
   static const String forgetPasswordApi = "/api/auth/login-with-password/";
   static const String productsApi = "/api/product/all-products/";
+  static const String productsPriceApi = "/api/product/all-price/";
   static const String aboutUsApi = "/api/about/us/";
   static const String termAndConditionApi = "/api/about/term-of-use/";
   static const String privacyPolicyApi = "/api/about/privacy-policy";

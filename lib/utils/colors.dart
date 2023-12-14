@@ -24,4 +24,5 @@ class AppColors {
   static const Color kwhiteColor = Color(0xffffffff);
   static const Color kscaffoldBackgroundLight = Color(0xffE0E0E0);
   static const Color kappBarColorlight = Color(0xFF2ecc71);
+  static Color kChartAreaColor = kappBarColorlight.withOpacity(0.3);
 }

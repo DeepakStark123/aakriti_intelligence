@@ -5,6 +5,7 @@ import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/screens/forget_password_screen.dart';
 import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
+import 'package:aakriti_inteligence/utils/constant.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
 import 'package:aakriti_inteligence/widgets/header_widget.dart';
 import 'package:animate_do/animate_do.dart';
@@ -222,12 +223,11 @@ class _LoginScreenState extends State<LoginScreen>
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: globalTopPadding,
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 20, 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

@@ -7,3 +7,4 @@ const double globalNormalTextSize16 = 16.0;
 const double globalHeaderTextSize = 30;
 const double globalHeaderDiscriptionSize = 18;
 double globalIconSize = 20.sp;
+double globalTopPadding = 25.sp;

@@ -1,3 +1,4 @@
+import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomElevatedButton extends StatelessWidget {
@@ -19,8 +20,8 @@ class CustomElevatedButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor ?? Colors.blue,
-        foregroundColor: foregroundColor ?? Colors.white,
+        backgroundColor: backgroundColor ?? AppColors.kbuttonColor,
+        foregroundColor: foregroundColor ?? AppColors.kwhiteColor,
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),

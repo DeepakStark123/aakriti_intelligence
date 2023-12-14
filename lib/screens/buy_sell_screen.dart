@@ -83,7 +83,7 @@ class _BuySellScreenState extends State<BuySellScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    height: globalTopPadding,
+                    height: topHeaderHeight,
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(5, 0, 10, 5),
@@ -376,14 +376,12 @@ class _BuySellScreenState extends State<BuySellScreen> {
                                               }
                                             },
                                             child: Center(
-                                              child: Text(
-                                                widget.isBuy == true
+                                              child: CustomTextWidget(
+                                                text: widget.isBuy == true
                                                     ? "BUY"
                                                     : "SELL",
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                color: AppColors.kwhiteColor,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ),

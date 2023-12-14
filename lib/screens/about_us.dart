@@ -18,7 +18,8 @@ class AboutUsScreen extends StatefulWidget {
 class _AboutUsScreenState extends State<AboutUsScreen> {
   Utility utility = Utility();
   bool loading = true;
-  String htmlData = '''<p>No data found </p>''';
+  String? htmlData;
+  String noDataFound = '''<center><p>No data found </p></center>''';
 
   setLoading(bool value) {
     setState(() {
@@ -26,19 +27,21 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     });
   }
 
-  privacyPolicyData() async {
+  aboutUSData() async {
     setLoading(true);
     try {
       final response = await ApiService.getApi(
         endpoint: AppStrings.aboutUsApi,
+        context: context,
       );
       debugPrint(
           'privacyPolicyData Res: ${response.statusCode} ${response.body}');
+      htmlData = null;
       if (response.statusCode == 200) {
         final res = aboutUsModelFromJson(response.body.toString());
         if (res.status == 200) {
           if (context.mounted) {
-            htmlData = res.data!.description ?? """<p>No Data Found</p>""";
+            htmlData = res.data!.description;
           }
         } else {
           if (context.mounted) {
@@ -57,7 +60,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
 
   @override
   void initState() {
-    privacyPolicyData();
+    aboutUSData();
     super.initState();
   }
 
@@ -65,27 +68,34 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const CustomTextWidget(
+        title: CustomTextWidget(
           text: "About-Us",
+          fontSize: custom16PxPadding,
         ),
       ),
       body: loading
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: globalPadding,
-                  vertical: 2,
+          : htmlData == null
+              ? const Center(
+                  child: CustomTextWidget(
+                    text: "No Data Found",
+                  ),
+                )
+              : SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: globalPadding,
+                      vertical: 2,
+                    ),
+                    child: HtmlWidget(
+                      htmlData ?? noDataFound,
+                      renderMode: RenderMode.column,
+                      textStyle: TextStyle(fontSize: 14.sp),
+                    ),
+                  ),
                 ),
-                child: HtmlWidget(
-                  htmlData,
-                  renderMode: RenderMode.column,
-                  textStyle: TextStyle(fontSize: 14.sp),
-                ),
-              ),
-            ),
     );
   }
 }

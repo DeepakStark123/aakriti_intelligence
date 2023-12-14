@@ -5,6 +5,7 @@ import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
 import 'package:aakriti_inteligence/widgets/custom_btn.dart';
+import 'package:aakriti_inteligence/widgets/custom_text.dart';
 import 'package:aakriti_inteligence/widgets/header_widget.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       final response = await ApiService.postApi(
         endpoint: AppStrings.profileUpdateApi,
         body: data,
+        context: context,
       );
       debugPrint('Edit Profile Res: ${response.statusCode} ${response.body}');
       if (response.statusCode == 200) {
@@ -348,13 +350,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                 debugPrint("form valid");
                                               }
                                             },
-                                            child: const Center(
-                                              child: Text(
-                                                "Update",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                            child: Center(
+                                              child: CustomTextWidget(
+                                                text: "Update".toUpperCase(),
+                                                color: AppColors.kwhiteColor,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ),

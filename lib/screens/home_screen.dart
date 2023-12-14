@@ -39,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final response = await ApiService.getApi(
         endpoint: AppStrings.productsApi,
+        context: context,
       );
       debugPrint('productsData Res: ${response.statusCode} ${response.body}');
       mobileItems = [];

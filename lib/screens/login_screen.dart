@@ -5,8 +5,10 @@ import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/screens/forget_password_screen.dart';
 import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
+import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/constant.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
+import 'package:aakriti_inteligence/widgets/custom_text.dart';
 import 'package:aakriti_inteligence/widgets/header_widget.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen>
       final response = await ApiService.postApi(
         endpoint: AppStrings.loginWithPasswordApi,
         body: data,
+        context: context,
       );
       debugPrint(
           'LoginWithPassword Res: ${response.statusCode} ${response.body}');
@@ -89,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen>
       final response = await ApiService.postApi(
         endpoint: AppStrings.generateOtpApi,
         body: data,
+        context: context,
       );
       debugPrint('GererateOtp Res: ${response.statusCode} ${response.body}');
       if (response.statusCode == 200) {
@@ -128,6 +132,7 @@ class _LoginScreenState extends State<LoginScreen>
       final response = await ApiService.postApi(
         endpoint: AppStrings.loginWithOptApi,
         body: data,
+        context: context,
       );
       debugPrint('GererateOtp Res: ${response.statusCode} ${response.body}');
       if (response.statusCode == 200) {
@@ -224,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    height: globalTopPadding,
+                    height: topHeaderHeight,
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 20, 10),
@@ -272,9 +277,18 @@ class _LoginScreenState extends State<LoginScreen>
                               onTap: (index) {
                                 clearform(index);
                               },
+                              labelPadding: EdgeInsets.only(
+                                bottom: customNomalPadding,
+                              ),
                               tabs: const [
-                                Tab(text: 'Login With Password'),
-                                Tab(text: 'Login With OTP'),
+                                CustomTextWidget(
+                                  text: "Login With Password",
+                                  fontSize: 13,
+                                ),
+                                CustomTextWidget(
+                                  text: "Login With OTP",
+                                  fontSize: 13,
+                                ),
                               ],
                             ),
                             Expanded(
@@ -413,8 +427,10 @@ class _LoginScreenState extends State<LoginScreen>
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(10),
-                                                        child: const Text(
-                                                            "Clear Form"),
+                                                        child:
+                                                            const CustomTextWidget(
+                                                          text: "Clear Form",
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
@@ -487,14 +503,13 @@ class _LoginScreenState extends State<LoginScreen>
                                                               child:
                                                                   CircularProgressIndicator(),
                                                             )
-                                                          : const Text(
-                                                              "Login",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
+                                                          : const CustomTextWidget(
+                                                              text: "Login",
+                                                              color: AppColors
+                                                                  .kwhiteColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                     ),
                                                   ),
@@ -654,8 +669,10 @@ class _LoginScreenState extends State<LoginScreen>
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(10),
-                                                        child: const Text(
-                                                            "Clear Form"),
+                                                        child:
+                                                            const CustomTextWidget(
+                                                          text: "Clear Form",
+                                                        ),
                                                       ),
                                                     ),
                                                   ],

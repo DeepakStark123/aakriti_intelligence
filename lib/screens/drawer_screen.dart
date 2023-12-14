@@ -1,7 +1,6 @@
 import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/screens/about_us.dart';
 import 'package:aakriti_inteligence/screens/edit_profile.dart';
-import 'package:aakriti_inteligence/screens/home_screen.dart';
 import 'package:aakriti_inteligence/screens/login_screen.dart';
 import 'package:aakriti_inteligence/screens/privacy_policy.dart';
 import 'package:aakriti_inteligence/screens/term_condition.dart';
@@ -190,16 +189,7 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                         ),
                         onPressed: () async {
                           if (widget.isLogin) {
-                            await Utility.clearPreferenceData();
-                            if (context.mounted) {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute<void>(
-                                    builder: (BuildContext context) =>
-                                        const HomeScreen()),
-                                ModalRoute.withName('/'),
-                              );
-                            }
+                            Utility.logoutFromApp(context);
                           } else {
                             if (context.mounted) {
                               Navigator.push(

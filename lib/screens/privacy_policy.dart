@@ -18,7 +18,8 @@ class PrivacyAndPolicy extends StatefulWidget {
 class _PrivacyAndPolicyState extends State<PrivacyAndPolicy> {
   Utility utility = Utility();
   bool loading = true;
-  String htmlData = '''<p>No data found </p>''';
+  String? htmlData;
+  String noDataFound = '''<center><p>No data found </p></center>''';
 
   setLoading(bool value) {
     setState(() {
@@ -31,14 +32,16 @@ class _PrivacyAndPolicyState extends State<PrivacyAndPolicy> {
     try {
       final response = await ApiService.getApi(
         endpoint: AppStrings.privacyPolicyApi,
+        context: context,
       );
       debugPrint(
           'privacyPolicyData Res: ${response.statusCode} ${response.body}');
+      htmlData = null;
       if (response.statusCode == 200) {
         final res = privacyPolicyModelFromJson(response.body.toString());
         if (res.status == 200) {
           if (context.mounted) {
-            htmlData = res.data!.description ?? """<p>No Data Found</p>""";
+            htmlData = res.data!.description;
           }
         } else {
           if (context.mounted) {
@@ -65,25 +68,32 @@ class _PrivacyAndPolicyState extends State<PrivacyAndPolicy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const CustomTextWidget(
+        title: CustomTextWidget(
           text: "Privacy & Policy",
+          fontSize: custom16PxPadding,
         ),
       ),
       body: loading
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: globalPadding, vertical: 2),
-                child: HtmlWidget(
-                  htmlData,
-                  renderMode: RenderMode.column,
-                  textStyle: const TextStyle(fontSize: 14),
+          : htmlData == null
+              ? const Center(
+                  child: CustomTextWidget(
+                    text: "No Data Found",
+                  ),
+                )
+              : SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: globalPadding, vertical: 2),
+                    child: HtmlWidget(
+                      htmlData ?? noDataFound,
+                      renderMode: RenderMode.column,
+                      textStyle: const TextStyle(fontSize: 14),
+                    ),
+                  ),
                 ),
-              ),
-            ),
     );
   }
 }

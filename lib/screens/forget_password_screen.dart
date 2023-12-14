@@ -6,6 +6,7 @@ import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
+import 'package:aakriti_inteligence/widgets/custom_text.dart';
 import 'package:aakriti_inteligence/widgets/header_widget.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       final response = await ApiService.postApi(
         endpoint: AppStrings.generateOtpApi,
         body: data,
+        context: context,
       );
       debugPrint('GererateOtp Res: ${response.statusCode} ${response.body}');
       if (response.statusCode == 200) {
@@ -86,6 +88,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       final response = await ApiService.postApi(
         endpoint: AppStrings.forgetPasswordApi,
         body: data,
+        context: context,
       );
       debugPrint('forgetPassword Res: ${response.statusCode} ${response.body}');
       if (response.statusCode == 200) {
@@ -424,14 +427,15 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    Text(
-                                                        "If you already have account?"),
-                                                    Text(
-                                                      " Login",
-                                                      style: TextStyle(
-                                                        color: AppColors
-                                                            .kbuttonColor,
-                                                      ),
+                                                    CustomTextWidget(
+                                                        text:
+                                                            "If you already have account?"),
+                                                    CustomTextWidget(
+                                                      text: " Login",
+                                                      color: AppColors
+                                                          .kbuttonColor,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ],
                                                 ),
@@ -480,15 +484,14 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                                       child:
                                                           CircularProgressIndicator(),
                                                     )
-                                                  : Text(
-                                                      otpField
+                                                  : CustomTextWidget(
+                                                      text: otpField
                                                           ? "Forget Password"
                                                           : "Get Verification Code",
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
+                                                      color:
+                                                          AppColors.kwhiteColor,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                             ),
                                           ),

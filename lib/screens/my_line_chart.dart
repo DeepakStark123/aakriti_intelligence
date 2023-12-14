@@ -4,6 +4,7 @@ import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
 import 'package:aakriti_inteligence/widgets/custom_btn.dart';
+import 'package:aakriti_inteligence/widgets/custom_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,6 +39,7 @@ class _MyLineChartState extends State<MyLineChart> {
       final response = await ApiService.postApi(
         endpoint: AppStrings.productsPriceApi,
         body: data,
+        context: context,
       );
       debugPrint('productsPrice Res: ${response.statusCode} ${response.body}');
       productsPriceList = [];
@@ -82,7 +84,9 @@ class _MyLineChartState extends State<MyLineChart> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chart View'),
+        title: const CustomTextWidget(
+          text: "Chart View",
+        ),
       ),
       body: dates.isEmpty || prices.isEmpty
           ? const Center(child: CircularProgressIndicator())
@@ -94,10 +98,10 @@ class _MyLineChartState extends State<MyLineChart> {
                   children: [
                     const Padding(
                       padding: EdgeInsets.only(left: 6),
-                      child: Text(
-                        'Price History Chart',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                      child: CustomTextWidget(
+                        text: 'Price History Chart',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -193,7 +197,9 @@ class _MyLineChartState extends State<MyLineChart> {
                                       backgroundColor: isDetailScreen
                                           ? AppColors.kbuttonColor
                                           : AppColors.kprimaryColor,
-                                      child: const Text("Details"),
+                                      child: const CustomTextWidget(
+                                        text: 'Details',
+                                      ),
                                       onPressed: () {
                                         setState(() {
                                           isDetailScreen = true;
@@ -211,7 +217,9 @@ class _MyLineChartState extends State<MyLineChart> {
                                       backgroundColor: isNewsScreen
                                           ? AppColors.kbuttonColor
                                           : AppColors.kprimaryColor,
-                                      child: const Text("News"),
+                                      child: const CustomTextWidget(
+                                        text: 'News',
+                                      ),
                                       onPressed: () {
                                         setState(() {
                                           isDetailScreen = false;
@@ -229,7 +237,9 @@ class _MyLineChartState extends State<MyLineChart> {
                                       backgroundColor: isLogsScreen
                                           ? AppColors.kbuttonColor
                                           : AppColors.kprimaryColor,
-                                      child: const Text("Logs"),
+                                      child: const CustomTextWidget(
+                                        text: 'Logs',
+                                      ),
                                       onPressed: () {
                                         setState(() {
                                           isDetailScreen = false;
@@ -262,15 +272,14 @@ class _MyLineChartState extends State<MyLineChart> {
                                     elevation: 5,
                                     margin: const EdgeInsets.all(8),
                                     child: ListTile(
-                                      title: Text(
-                                        'Price: $price',
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
+                                      title: CustomTextWidget(
+                                        text: 'Price: $price',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      subtitle: Text(
-                                        'Date: ${DateFormat('dd-MMM-yyyy').format(date)}',
-                                        style: const TextStyle(fontSize: 14),
+                                      subtitle: CustomTextWidget(
+                                        text:
+                                            'Date: ${DateFormat('dd-MMM-yyyy').format(date)}',
                                       ),
                                     ),
                                   );

@@ -8,11 +8,11 @@ import 'package:aakriti_inteligence/utils/constant.dart';
 import 'package:aakriti_inteligence/utils/my_utitlity.dart';
 import 'package:aakriti_inteligence/widgets/custom_btn.dart';
 import 'package:aakriti_inteligence/widgets/custom_text.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MyLineChart extends StatefulWidget {
   const MyLineChart({
@@ -256,6 +256,9 @@ class _MyLineChartState extends State<MyLineChart> {
 
   @override
   Widget build(BuildContext context) {
+    List<ProductsData> latestData = productsPriceList.length > 7
+        ? productsPriceList.sublist(productsPriceList.length - 7)
+        : productsPriceList;
     return Scaffold(
       appBar: AppBar(
         title: const CustomTextWidget(
@@ -316,59 +319,22 @@ class _MyLineChartState extends State<MyLineChart> {
                               ? const Center(
                                   child: Text("No Data Found"),
                                 )
-                              : LineChart(
-                                  LineChartData(
-                                    gridData: const FlGridData(show: true),
-                                    titlesData: FlTitlesData(
-                                      leftTitles: const AxisTitles(
-                                          sideTitles: SideTitles(
-                                        reservedSize: 30,
-                                        showTitles: false,
-                                      )),
-                                      bottomTitles: AxisTitles(
-                                        sideTitles: SideTitles(
-                                          showTitles: true,
-                                          reservedSize: 22,
-                                          getTitlesWidget: (value, meta) {
-                                            DateTime dateTime =
-                                                productsPriceList[value.toInt()]
-                                                    .date;
-                                            return SideTitleWidget(
-                                              axisSide: meta.axisSide,
-                                              child: Text(
-                                                getDayName(dateTime.weekday),
-                                              ),
-                                            );
-                                          },
-                                        ),
+                              : SfCartesianChart(
+                                  primaryXAxis: DateTimeAxis(isVisible: true),
+                                  primaryYAxis: NumericAxis(),
+                                  series: <ChartSeries>[
+                                    LineSeries<ProductsData, DateTime>(
+                                      dataSource: latestData,
+                                      xValueMapper: (ProductsData entry, _) =>
+                                          entry.date,
+                                      yValueMapper: (ProductsData entry, _) =>
+                                          entry.price,
+                                      dataLabelSettings:
+                                          const DataLabelSettings(
+                                        isVisible: true,
                                       ),
                                     ),
-                                    borderData: FlBorderData(show: true),
-                                    lineBarsData: [
-                                      LineChartBarData(
-                                        spots: List.generate(
-                                          productsPriceList.length > 7
-                                              ? 7
-                                              : productsPriceList.length,
-                                          (index) {
-                                            return FlSpot(
-                                              index.toDouble(),
-                                              productsPriceList[index]
-                                                  .price
-                                                  .toDouble(),
-                                            );
-                                          },
-                                        ),
-                                        isCurved: true,
-                                        belowBarData: BarAreaData(
-                                          show: true,
-                                          color: AppColors.kChartAreaColor,
-                                        ),
-                                        shadow: const Shadow(
-                                            color: Colors.transparent),
-                                      ),
-                                    ],
-                                  ),
+                                  ],
                                 ),
                           // LineChart(
                           //     LineChartData(
@@ -560,4 +526,10 @@ class _MyLineChartState extends State<MyLineChart> {
             ),
     );
   }
+}
+
+class SalesData {
+  SalesData(this.day, this.price);
+  final DateTime day;
+  final double price;
 }

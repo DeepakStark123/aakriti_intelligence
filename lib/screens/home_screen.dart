@@ -221,8 +221,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           Container(
-                            height: 40.h,
-                            width: 40.h,
+                            height: 40.sp,
+                            width: 40.sp,
                             margin: const EdgeInsets.only(left: 10),
                             decoration: BoxDecoration(
                               color: AppColors.kbuttonColor,

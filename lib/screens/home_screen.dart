@@ -340,9 +340,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                             children: [
                                               CustomElevatedButton(
                                                 backgroundColor:
-                                                    AppColors.kbuttonColor,
+                                                    AppColors.kaccentColor,
                                                 child: const CustomTextWidget(
-                                                  text: "Buy",
+                                                  text: "Sell",
                                                   color: AppColors.kwhiteColor,
                                                 ),
                                                 onPressed: () {
@@ -352,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       MaterialPageRoute(
                                                         builder: (context) =>
                                                             BuySellScreen(
-                                                          isBuy: true,
+                                                          isBuy: false,
                                                           productId:
                                                               mobileItem.id ??
                                                                   0,
@@ -367,9 +367,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                               CustomElevatedButton(
                                                 backgroundColor:
-                                                    AppColors.kaccentColor,
+                                                    AppColors.kbuttonColor,
                                                 child: const CustomTextWidget(
-                                                  text: "Sell",
+                                                  text: "Buy",
                                                   color: AppColors.kwhiteColor,
                                                 ),
                                                 onPressed: () {
@@ -379,7 +379,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       MaterialPageRoute(
                                                         builder: (context) =>
                                                             BuySellScreen(
-                                                          isBuy: false,
+                                                          isBuy: true,
                                                           productId:
                                                               mobileItem.id ??
                                                                   0,

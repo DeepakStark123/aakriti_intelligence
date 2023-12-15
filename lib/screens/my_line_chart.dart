@@ -181,7 +181,9 @@ class _MyLineChartState extends State<MyLineChart> {
             ),
             TextField(
               controller: newPriceController,
-              decoration: const InputDecoration(labelText: 'New Price'),
+              decoration: const InputDecoration(
+                labelText: 'Add Price',
+              ),
               keyboardType: TextInputType.number,
             ),
             SizedBox(
@@ -316,9 +318,6 @@ class _MyLineChartState extends State<MyLineChart> {
                                 )
                               : LineChart(
                                   LineChartData(
-                                    // showingTooltipIndicators: const [
-                                    //   ShowingTooltipIndicators();
-                                    // ],
                                     gridData: const FlGridData(show: true),
                                     titlesData: FlTitlesData(
                                       leftTitles: const AxisTitles(

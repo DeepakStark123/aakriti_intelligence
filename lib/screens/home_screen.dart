@@ -1,7 +1,8 @@
-import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/models/products_model.dart';
+import 'package:aakriti_inteligence/models/user_profile_model.dart';
 import 'package:aakriti_inteligence/screens/drawer_screen.dart';
 import 'package:aakriti_inteligence/screens/buy_sell_screen.dart';
+import 'package:aakriti_inteligence/screens/my_line_chart.dart';
 import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
@@ -24,14 +25,33 @@ class _HomeScreenState extends State<HomeScreen> {
   Utility utility = Utility();
   List<ProductData> mobileItems = [];
   List<ProductData> totalItem = [];
-  bool loading = true;
-  LoginDataModel? profileData;
+  bool pageLoading = true;
   String username = AppStrings.appName;
+  String userEmail = "";
+  bool loginStatus = false;
 
   setLoading(bool value) {
     setState(() {
-      loading = value;
+      pageLoading = value;
     });
+  }
+
+  //---getProfile---
+  checkLogin() async {
+    var emailData = await Utility.getLogin();
+    debugPrint("getProfileData ===> $emailData ");
+    if (emailData != "") {
+      await userProfile(email: emailData);
+      setState(() {
+        loginStatus = true;
+      });
+    } else {
+      username = AppStrings.appName;
+      setState(() {
+        loginStatus = false;
+      });
+    }
+    productsData();
   }
 
   productsData() async {
@@ -41,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
         endpoint: AppStrings.productsApi,
         context: context,
       );
-      debugPrint('productsData Res: ${response.statusCode} ${response.body}');
+      // debugPrint('productsData Res: ${response.statusCode} ${response.body}');
       mobileItems = [];
       totalItem = [];
       if (response.statusCode == 200) {
@@ -49,6 +69,50 @@ class _HomeScreenState extends State<HomeScreen> {
             productListModelFromJson(response.body.toString());
         mobileItems = productListModel.data ?? [];
         totalItem.addAll(mobileItems);
+      } else {
+        debugPrint("Error = ${response.statusCode} message = ${response.body}");
+      }
+    } catch (e) {
+      debugPrint('Exception Caught: $e');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //-----User-Profile-----------------
+  userProfile({
+    required String email,
+  }) async {
+    setLoading(true);
+    var data = {
+      "email": email.trim(),
+    };
+    try {
+      final response = await ApiService.postApi(
+        endpoint: AppStrings.getuserProfile,
+        body: data,
+        context: context,
+      );
+      debugPrint('Get User Profile: ${response.statusCode} ${response.body}');
+      if (response.statusCode == 200) {
+        var res = userProfileModleFromJson(response.body.toString());
+        if (res.status == 200) {
+          if (context.mounted) {
+            setState(() {
+              var firstName = res.user.fname;
+              var lastName = res.user.lname;
+              username = "$firstName $lastName";
+              userEmail = res.user.email ?? '';
+            });
+            await Utility.saveLogin(res.user.email ?? "");
+            await Utility.saveAdminStatus(res.user.isAdmin ?? false);
+          }
+        } else {
+          setState(() {
+            username = AppStrings.appName;
+            userEmail = "";
+          });
+        }
       } else {
         debugPrint("Error = ${response.statusCode} message = ${response.body}");
       }
@@ -76,24 +140,9 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  getProfileData() async {
-    profileData = await utility.getUserProfileData();
-    if (profileData != null) {
-      var firstName = profileData?.user!.fname ?? "";
-      var lastName = profileData?.user!.lname ?? "";
-      username = "$firstName $lastName";
-    } else {
-      username = AppStrings.appName;
-    }
-    setState(() {});
-  }
-
-  searchItem() {}
-
   @override
   void initState() {
-    productsData();
-    getProfileData();
+    checkLogin();
     super.initState();
   }
 
@@ -102,8 +151,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _key,
       drawer: CustomNavigationDrawer(
-        isLogin: profileData != null ? true : false,
-        userProfileData: profileData,
+        isLogin: loginStatus,
+        fullName: username,
+        userEmail: userEmail,
       ),
       body: SafeArea(
         child: Padding(
@@ -121,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const CustomTextWidget(
-                              text: "Hello welcome",
+                              text: "Hello, welcome",
                               color: Colors.black38,
                             ),
                             CustomTextWidget(
@@ -144,55 +194,59 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            height: 50.sp,
-                            child: TextFormField(
-                              onChanged: (value) {
-                                filterSearchResults(value);
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: const Icon(Icons.search),
-                                hintText: 'Search items...',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black54),
+                    SizedBox(
+                      height: 45.h,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 45.h,
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  filterSearchResults(value);
+                                },
+                                decoration: InputDecoration(
+                                  prefixIcon: const Icon(Icons.search),
+                                  hintText: 'Search items...',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black54),
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 12.0, horizontal: 16.0),
                                 ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 12.0, horizontal: 16.0),
                               ),
                             ),
                           ),
-                        ),
-                        Container(
-                          height: 50.sp,
-                          width: 50.sp,
-                          margin: const EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            color: AppColors.kbuttonColor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              _key.currentState!.openDrawer();
-                            },
-                            child: Icon(
-                              Icons.menu,
-                              size: globalIconSize,
-                              color: AppColors.kwhiteColor,
+                          Container(
+                            height: 40.h,
+                            width: 40.h,
+                            margin: const EdgeInsets.only(left: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.kbuttonColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                _key.currentState!.openDrawer();
+                              },
+                              child: Icon(
+                                Icons.menu,
+                                size: globalIconSize,
+                                color: AppColors.kwhiteColor,
+                              ),
                             ),
                           ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
               Expanded(
-                child: loading
+                child: pageLoading
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
@@ -202,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           final ProductData mobileItem = mobileItems[index];
                           return Container(
-                            height: 0.21.sh,
+                            height: 0.2.sh,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: const BorderRadius.all(
@@ -279,32 +333,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         const SizedBox(
                                           height: 2,
                                         ),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            CustomElevatedButton(
-                                              backgroundColor:
-                                                  AppColors.kprimaryColor,
-                                              child: const CustomTextWidget(
-                                                text: "View",
-                                                color: AppColors.kwhiteColor,
-                                              ),
-                                              onPressed: () {
-                                                // Navigator.push(
-                                                //   context,
-                                                //   MaterialPageRoute(
-                                                //     builder: (context) =>
-                                                //         const MyLineChart(),
-                                                //     // MycartScreen(),
-                                                //   ),
-                                                // );
-                                              },
-                                            ),
-                                            const SizedBox(
-                                              width: 2,
-                                            ),
-                                            Expanded(
-                                              child: CustomElevatedButton(
+                                        SizedBox(
+                                          height: 0.05.sh,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              CustomElevatedButton(
                                                 backgroundColor:
                                                     AppColors.kbuttonColor,
                                                 child: const CustomTextWidget(
@@ -328,12 +362,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   }
                                                 },
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              width: 2,
-                                            ),
-                                            Expanded(
-                                              child: CustomElevatedButton(
+                                              const SizedBox(
+                                                width: 2,
+                                              ),
+                                              CustomElevatedButton(
                                                 backgroundColor:
                                                     AppColors.kaccentColor,
                                                 child: const CustomTextWidget(
@@ -357,8 +389,42 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   }
                                                 },
                                               ),
-                                            ),
-                                          ],
+                                              const SizedBox(
+                                                width: 2,
+                                              ),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      AppColors.kprimaryColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                ),
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MyLineChart(
+                                                          productId:
+                                                              mobileItem.id ??
+                                                                  0,
+                                                          currentPrice:
+                                                              mobileItem.sp
+                                                                  .toString(),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.auto_graph_rounded,
+                                                    color:
+                                                        AppColors.kwhiteColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),

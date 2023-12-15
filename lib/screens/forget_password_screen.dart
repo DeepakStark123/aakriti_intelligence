@@ -94,8 +94,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       if (response.statusCode == 200) {
         var res = loginDataModelFromJson(response.body.toString());
         if (res.status == 200) {
-          await Utility.saveLogin(res.user!.email ?? "");
-          await Utility.saveUserData(response.body.toString());
           if (context.mounted) {
             Utility.showCustomSnackbar(context, res.message ?? "Success", true);
           }
@@ -117,10 +115,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   getInitilaData() async {
     try {
-      LoginDataModel? data = await Utility().getUserProfileData();
-      if (data != null) {
+      var data = await Utility.getLogin();
+      if (data != "") {
         setState(() {
-          emailController.text = data.user!.email ?? "";
+          emailController.text = data;
           pageLoading = false;
           isUserLogin = true;
         });
@@ -360,7 +358,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                                     validator: (value) {
                                                       if (value == null ||
                                                           value.isEmpty) {
-                                                        return 'Please enter reset password';
+                                                        return 'Please enter confirm password';
                                                       }
                                                       return null;
                                                     },
@@ -372,7 +370,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                                     decoration:
                                                         const InputDecoration(
                                                       hintText:
-                                                          "Enter Reset Password",
+                                                          "Enter Confirm Password",
                                                       hintStyle: TextStyle(
                                                           color: Colors.grey),
                                                       border: InputBorder.none,
@@ -399,7 +397,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                               child: Container(
                                                 padding:
                                                     const EdgeInsets.all(10),
-                                                child: const Text("Clear Form"),
+                                                child: const CustomTextWidget(
+                                                  text: "Cancel",
+                                                  color: AppColors.kaccentColor,
+                                                ),
                                               ),
                                             ),
                                           ],

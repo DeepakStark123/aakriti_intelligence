@@ -1,6 +1,6 @@
-import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/screens/about_us.dart';
 import 'package:aakriti_inteligence/screens/edit_profile.dart';
+import 'package:aakriti_inteligence/screens/home_screen.dart';
 import 'package:aakriti_inteligence/screens/login_screen.dart';
 import 'package:aakriti_inteligence/screens/privacy_policy.dart';
 import 'package:aakriti_inteligence/screens/term_condition.dart';
@@ -12,10 +12,15 @@ import 'package:aakriti_inteligence/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomNavigationDrawer extends StatefulWidget {
-  const CustomNavigationDrawer(
-      {super.key, required this.isLogin, this.userProfileData});
+  const CustomNavigationDrawer({
+    super.key,
+    required this.isLogin,
+    required this.fullName,
+    required this.userEmail,
+  });
   final bool isLogin;
-  final LoginDataModel? userProfileData;
+  final String fullName;
+  final String userEmail;
 
   @override
   CustomNavigationDrawerState createState() => CustomNavigationDrawerState();
@@ -26,11 +31,9 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
   String userEmail = "Welcom Back";
 
   getDefaultData() {
-    if (widget.userProfileData != null) {
-      var firstName = widget.userProfileData?.user!.fname ?? "";
-      var lastName = widget.userProfileData?.user!.lname ?? "";
-      userEmail = widget.userProfileData?.user!.lname ?? "";
-      userName = firstName + lastName;
+    if (widget.isLogin == true) {
+      userName = widget.fullName;
+      userEmail = widget.userEmail;
     } else {
       userName = AppStrings.appName;
       userEmail = "Welcom Back";
@@ -142,19 +145,30 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                       },
                       leadingIcon: Icons.privacy_tip,
                     ),
-                    const Divider(),
-                    customTile(
-                      text: "Setting & Profile",
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const EditProfileScreen(),
-                          ),
-                        );
-                      },
-                      leadingIcon: Icons.settings,
-                    ),
+                    if (widget.isLogin) ...[
+                      const Divider(),
+                      customTile(
+                        text: "Setting & Profile",
+                        onTap: () async {
+                          var res = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EditProfileScreen(),
+                            ),
+                          );
+                          if (res == true) {
+                            if (context.mounted) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => const HomeScreen()),
+                                (Route<dynamic> route) => false,
+                              );
+                            }
+                          }
+                        },
+                        leadingIcon: Icons.settings,
+                      ),
+                    ],
                     const Divider(),
                     customTile(
                       text: "About Us",
@@ -184,20 +198,33 @@ class CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
                       child: CustomElevatedButton(
                         backgroundColor: AppColors.kbuttonColor,
                         child: CustomTextWidget(
-                          text: widget.isLogin ? 'Logout' : 'Login',
+                          text: widget.isLogin ? 'Sign Out' : 'Sign In',
                           color: AppColors.kwhiteColor,
                         ),
                         onPressed: () async {
                           if (widget.isLogin) {
-                            Utility.logoutFromApp(context);
+                            setState(() {
+                              Utility.logoutFromApp(context);
+                            });
                           } else {
                             if (context.mounted) {
-                              Navigator.push(
+                              var response = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        const LoginScreen()),
+                                  builder: (BuildContext context) =>
+                                      const LoginScreen(),
+                                ),
                               );
+                              if (response == true) {
+                                if (context.mounted) {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const HomeScreen()),
+                                    (Route<dynamic> route) => false,
+                                  );
+                                }
+                              }
                             }
                           }
                         },

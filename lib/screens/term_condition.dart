@@ -66,9 +66,9 @@ class _TermAndCondionState extends State<TermAndCondion> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  CustomTextWidget(
+        title: const CustomTextWidget(
           text: "Terms & Conditions",
-          fontSize: custom16PxPadding,
+          fontSize: headerFontSize,
         ),
       ),
       body: loading

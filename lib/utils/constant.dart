@@ -44,5 +44,5 @@ final custom16PxMargin = 16.sp;
 //----Header height-----
 final double topHeaderHeight = 25.h;
 //---Header-Text-Font----
-const double headerFontSize = 25; //30
+const double headerFontSize = 20; //30
 const double subHeaderFontSize = 11;

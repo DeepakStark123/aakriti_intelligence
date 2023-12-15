@@ -63,12 +63,14 @@ class _LoginScreenState extends State<LoginScreen>
       if (response.statusCode == 200) {
         var res = loginDataModelFromJson(response.body.toString());
         if (res.status == 200) {
+          // await Utility.saveUserData(response.body.toString());
+          debugPrint("res.user!.isAdmin  = ${res.user!.isAdmin}");
           await Utility.saveLogin(res.user!.email ?? "");
-          await Utility.saveUserData(response.body.toString());
+          await Utility.saveAdminStatus(res.user!.isAdmin ?? false)
+              .then((value) => resetData());
           if (context.mounted) {
             Utility.showCustomSnackbar(context, res.message ?? "Success", true);
           }
-          resetData();
         } else {
           if (context.mounted) {
             Utility.showCustomSnackbar(context, res.message ?? "Fail", false);
@@ -138,12 +140,14 @@ class _LoginScreenState extends State<LoginScreen>
       if (response.statusCode == 200) {
         var res = loginDataModelFromJson(response.body.toString());
         if (res.status == 200) {
+          debugPrint("res.user!.isAdmin  = ${res.user!.isAdmin}");
           await Utility.saveLogin(res.user!.email ?? "");
-          await Utility.saveUserData(response.body.toString());
+          await Utility.saveAdminStatus(res.user!.isAdmin ?? false)
+              .then((value) => resetData());
+          // await Utility.saveUserData(response.body.toString());
           if (context.mounted) {
             Utility.showCustomSnackbar(context, res.message ?? "Success", true);
           }
-          resetData();
         } else {
           if (context.mounted) {
             Utility.showCustomSnackbar(context, res.message ?? "Fail", false);
@@ -429,7 +433,9 @@ class _LoginScreenState extends State<LoginScreen>
                                                                 .all(10),
                                                         child:
                                                             const CustomTextWidget(
-                                                          text: "Clear Form",
+                                                          text: "Cancel",
+                                                          color: AppColors
+                                                              .kaccentColor,
                                                         ),
                                                       ),
                                                     ),
@@ -663,7 +669,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                     const SizedBox(),
                                                     InkWell(
                                                       onTap: () {
-                                                        clearform(1);
+                                                        clearform(0);
                                                       },
                                                       child: Container(
                                                         padding:
@@ -671,7 +677,9 @@ class _LoginScreenState extends State<LoginScreen>
                                                                 .all(10),
                                                         child:
                                                             const CustomTextWidget(
-                                                          text: "Clear Form",
+                                                          text: "Cancel",
+                                                          color: AppColors
+                                                              .kaccentColor,
                                                         ),
                                                       ),
                                                     ),

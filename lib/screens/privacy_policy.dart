@@ -68,9 +68,9 @@ class _PrivacyAndPolicyState extends State<PrivacyAndPolicy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CustomTextWidget(
+        title: const CustomTextWidget(
           text: "Privacy & Policy",
-          fontSize: custom16PxPadding,
+          fontSize: headerFontSize,
         ),
       ),
       body: loading

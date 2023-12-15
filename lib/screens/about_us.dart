@@ -68,9 +68,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CustomTextWidget(
+        title: const CustomTextWidget(
           text: "About-Us",
-          fontSize: custom16PxPadding,
+          fontSize: headerFontSize,
         ),
       ),
       body: loading

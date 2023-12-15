@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:aakriti_inteligence/models/login_data_model.dart';
+import 'package:aakriti_inteligence/models/update_profile_model.dart';
+import 'package:aakriti_inteligence/models/user_profile_model.dart';
 import 'package:aakriti_inteligence/utils/api_service.dart';
 import 'package:aakriti_inteligence/utils/app_string.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
@@ -25,6 +27,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Utility utility = Utility();
   LoginDataModel? profileData;
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -33,7 +36,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   setLoading(bool value) {
     setState(() {
-      pageLoading = value;
+      loading = value;
     });
   }
 
@@ -59,10 +62,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       );
       debugPrint('Edit Profile Res: ${response.statusCode} ${response.body}');
       if (response.statusCode == 200) {
-        var res = loginDataModelFromJson(response.body.toString());
+        var res = updateProfileModleFromJson(response.body.toString());
         if (res.status == 200) {
           if (context.mounted) {
             Utility.showCustomSnackbar(context, res.message ?? "Success", true);
+            if (context.mounted) {
+              Navigator.pop(context, true);
+            }
           }
         } else {
           if (context.mounted) {
@@ -78,29 +84,63 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       setLoading(false);
     }
   }
-
 //-
 
-  getUserDaata() async {
+  getProfileData() async {
+    var emailData = await Utility.getLogin();
+    debugPrint("getEmailData ===> $emailData ");
+    if (emailData != "") {
+      userProfile(email: emailData);
+    } else {
+      setState(() {
+        pageLoading = false;
+      });
+    }
+  }
+
+  //-----User-Profile-----------------
+  userProfile({
+    required String email,
+  }) async {
     setLoading(true);
+    var data = {
+      "email": email.trim(),
+    };
     try {
-      profileData = await utility.getUserProfileData();
-      if (profileData != null) {
-        firstNameController.text = profileData?.user!.fname ?? "";
-        lastNameController.text = profileData?.user!.lname ?? "";
-        emailController.text = profileData?.user!.email ?? "";
-        phoneNoController.text = profileData?.user!.phone ?? "";
+      final response = await ApiService.postApi(
+        endpoint: AppStrings.getuserProfile,
+        body: data,
+        context: context,
+      );
+      debugPrint('Get User Profile: ${response.statusCode} ${response.body}');
+      if (response.statusCode == 200) {
+        var res = userProfileModleFromJson(response.body.toString());
+        if (res.status == 200) {
+          if (context.mounted) {
+            setState(() {
+              firstNameController.text = res.user.fname ?? "";
+              lastNameController.text = res.user.lname ?? "";
+              emailController.text = res.user.email ?? "";
+              phoneNoController.text = res.user.phone ?? "";
+            });
+          }
+        }
+      } else {
+        debugPrint("Error = ${response.statusCode} message = ${response.body}");
       }
     } catch (e) {
-      debugPrint("Exception Caught = $e");
+      debugPrint('Exception Caught: $e');
     } finally {
-      setLoading(false);
+      setState(() {
+        pageLoading = false;
+        loading = false;
+      });
     }
   }
 
   @override
   void initState() {
-    getUserDaata();
+    getProfileData();
     super.initState();
   }
 
@@ -115,51 +155,48 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const Color(0xFF2ecc71).withOpacity(0.8),
           const Color(0xFF2ecc71).withOpacity(0.4),
         ])),
-        child: pageLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(
-                            Platform.isIOS
-                                ? Icons.arrow_back_ios
-                                : Icons.arrow_back,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(),
-                      ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+                      color: Colors.white,
                     ),
                   ),
-                  const HeaderWidget(
-                    headerText: "Edit Profile Screen",
-                    headerDiscription: "Update your profile",
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                  ),
-                  const SizedBox(height: 20),
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(60),
-                              topRight: Radius.circular(60))),
-                      child: Padding(
+                  const SizedBox(),
+                ],
+              ),
+            ),
+            const HeaderWidget(
+              headerText: "Edit Profile Screen",
+              headerDiscription: "Update your profile",
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(60),
+                        topRight: Radius.circular(60))),
+                child: pageLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Padding(
                         padding: const EdgeInsets.all(20),
                         child: Form(
                           key: _formKey,
@@ -275,6 +312,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                   autovalidateMode:
                                                       AutovalidateMode
                                                           .onUserInteraction,
+                                                  readOnly: true,
                                                   validator: (value) {
                                                     if (value == null ||
                                                         value.isEmpty) {
@@ -347,15 +385,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                             onPressed: () {
                                               if (_formKey.currentState!
                                                   .validate()) {
-                                                debugPrint("form valid");
+                                                editProfile(
+                                                  fname:
+                                                      firstNameController.text,
+                                                  lname:
+                                                      lastNameController.text,
+                                                  email: emailController.text,
+                                                  phoneNo:
+                                                      phoneNoController.text,
+                                                );
                                               }
                                             },
                                             child: Center(
-                                              child: CustomTextWidget(
-                                                text: "Update".toUpperCase(),
-                                                color: AppColors.kwhiteColor,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                              child: loading
+                                                  ? const CircularProgressIndicator()
+                                                  : CustomTextWidget(
+                                                      text: "Update"
+                                                          .toUpperCase(),
+                                                      color:
+                                                          AppColors.kwhiteColor,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
                                             ),
                                           ),
                                         ),
@@ -368,10 +419,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ],
               ),
+            ),
+          ],
+        ),
       ),
     );
   }

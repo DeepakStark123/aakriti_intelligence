@@ -1,4 +1,3 @@
-import 'package:aakriti_inteligence/models/login_data_model.dart';
 import 'package:aakriti_inteligence/screens/home_screen.dart';
 import 'package:aakriti_inteligence/utils/colors.dart';
 import 'package:aakriti_inteligence/utils/constant.dart';
@@ -15,7 +14,9 @@ class Utility {
       SnackBar(
         content: CustomTextWidget(
           text: message,
+          color: AppColors.kwhiteColor,
         ),
+        behavior: SnackBarBehavior.floating,
         backgroundColor: isSuccess ? Colors.green : Colors.red,
       ),
     );
@@ -125,7 +126,7 @@ class Utility {
   }
 
   ///Show success dialog box
-  static void showSucessDialogBox({
+  static showSucessDialogBox({
     required BuildContext context,
     String? title,
     required String message,
@@ -197,21 +198,34 @@ class Utility {
   static Future<String> getLogin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var data = prefs.getString("login") ?? "";
-    debugPrint('getLoginData: $data');
+    // debugPrint('getLoginData: $data');
     return data;
   }
 
-  static saveUserData(String userData) async {
+  static Future<bool> saveAdminStatus(bool data) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("userData", userData);
+    prefs.setBool("isAdmin", data);
+    return true;
   }
 
-  static Future<String> getUserData() async {
+  static Future<bool> getAdminStatus() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var userData = prefs.getString("userData") ?? "";
-    debugPrint('GetUserData: $userData');
-    return userData;
+    var data = prefs.getBool("isAdmin") ?? false;
+    // debugPrint('getLoginData: $data');
+    return data;
   }
+
+  // static saveUserData(String userData) async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setString("userData", userData);
+  // }
+
+  // static Future<String> getUserData() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   var userData = prefs.getString("userData") ?? "";
+  //   debugPrint('GetUserData: $userData');
+  //   return userData;
+  // }
 
 //--Get--User--Data-----
   static clearPreferenceData() async {
@@ -220,28 +234,25 @@ class Utility {
   }
 
 //--Get--User--Data-----
-  Future<LoginDataModel?> getUserProfileData() async {
-    String? res = await getUserData();
-    if (res != "null" && res != "") {
-      var data = loginDataModelFromJson(res.toString());
-      debugPrint("user email = ${data.user!.email}");
-      debugPrint("user phone = ${data.user!.phone}");
-      return data;
-    } else {
-      return null;
-    }
-  }
+  // Future<LoginDataModel?> getUserProfileData() async {
+  //   String? res = await getUserData();
+  //   if (res != "null" && res != "") {
+  //     var data = loginDataModelFromJson(res.toString());
+  //     debugPrint("user email = ${data.user!.email}");
+  //     debugPrint("user phone = ${data.user!.phone}");
+  //     return data;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
 //-----Logout---From--App-----
   static void logoutFromApp(BuildContext context) async {
     await clearPreferenceData();
     if (context.mounted) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute<void>(
-            builder: (BuildContext context) => const HomeScreen()),
-        ModalRoute.withName('/'),
-      );
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (Route<dynamic> route) => false);
     }
   }
 }

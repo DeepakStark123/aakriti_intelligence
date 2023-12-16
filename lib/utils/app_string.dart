@@ -1,7 +1,7 @@
 class AppStrings {
   //----------Api--------
-  static const String baseUrl = "http://192.168.1.15:8000";
-  // static const String baseUrl = "https://noqualification.in";
+  // static const String baseUrl = "http://192.168.1.15:8000";
+  static const String baseUrl = "https://noqualification.in";
   static const String generateOtpApi = "/api/auth/generate-otp/";
   static const String loginWithOptApi = "/api/auth/login-with-otp/";
   static const String loginWithPasswordApi = "/api/auth/login-with-password/";

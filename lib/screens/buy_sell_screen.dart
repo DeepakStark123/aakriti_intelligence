@@ -196,13 +196,7 @@ class _BuySellScreenState extends State<BuySellScreen> {
           const Color(0xFF2ecc71).withOpacity(0.8),
           const Color(0xFF2ecc71).withOpacity(0.4),
         ])),
-        child:
-            // pageLoading
-            //     ? const Center(
-            //         child: CircularProgressIndicator(),
-            //       )
-            //     :
-            Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(

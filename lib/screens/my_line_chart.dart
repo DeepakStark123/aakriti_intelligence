@@ -29,8 +29,8 @@ class MyLineChart extends StatefulWidget {
 
 class _MyLineChartState extends State<MyLineChart> {
   List<ProductsData> productsPriceList = [];
-  List<double> prices = [];
-  List<double> dates = [];
+  // List<double> prices = [];
+  // List<double> dates = [];
   bool pageLoading = true;
   bool isDetailScreen = true;
   bool isLogsScreen = false;
@@ -62,18 +62,18 @@ class _MyLineChartState extends State<MyLineChart> {
         productsPriceList = [];
         if (res.status == 200) {
           productsPriceList = res.productsData;
-          int maxCount =
-              productsPriceList.length > 7 ? 7 : productsPriceList.length;
-          for (int i = 0; i < maxCount; i++) {
-            setState(() {
-              // Price List
-              prices.add(productsPriceList[i].price);
-              DateTime date = productsPriceList[i].date;
-              String ecoTimeStamp = "${date.millisecondsSinceEpoch}";
-              // Dates List
-              dates.add(double.parse(ecoTimeStamp));
-            });
-          }
+          // int maxCount =
+          //     productsPriceList.length > 7 ? 7 : productsPriceList.length;
+          // for (int i = 0; i < maxCount; i++) {
+          //   setState(() {
+          //     // Price List
+          //     prices.add(productsPriceList[i].price);
+          //     DateTime date = productsPriceList[i].date;
+          //     String ecoTimeStamp = "${date.millisecondsSinceEpoch}";
+          //     // Dates List
+          //     dates.add(double.parse(ecoTimeStamp));
+          //   });
+          // }
         } else {
           if (context.mounted) {
             Utility.showCustomSnackbar(context, res.message ?? "Fail", false);
@@ -315,7 +315,7 @@ class _MyLineChartState extends State<MyLineChart> {
                         child: Padding(
                           padding: const EdgeInsets.only(
                               top: 24, bottom: 16, left: 20, right: 16),
-                          child: dates.isEmpty || prices.isEmpty
+                          child: productsPriceList.isEmpty
                               ? const Center(
                                   child: Text("No Data Found"),
                                 )

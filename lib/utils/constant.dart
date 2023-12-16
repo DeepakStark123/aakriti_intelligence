@@ -42,7 +42,7 @@ final customNomalMargin = 8.sp;
 final custom16PxMargin = 16.sp;
 
 //----Header height-----
-final double topHeaderHeight = 25.h;
+final double topHeaderHeight = 28.h;
 //---Header-Text-Font----
 const double headerFontSize = 20; //30
 const double subHeaderFontSize = 11;

@@ -256,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           final ProductData mobileItem = mobileItems[index];
                           return Container(
-                            height: 0.2.sh,
+                            height: 0.18.sh,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: const BorderRadius.all(
@@ -330,8 +330,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(
-                                          height: 2,
+                                        SizedBox(
+                                          height: 2.sp,
                                         ),
                                         SizedBox(
                                           height: 0.05.sh,
@@ -362,8 +362,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   }
                                                 },
                                               ),
-                                              const SizedBox(
-                                                width: 2,
+                                              SizedBox(
+                                                width: 2.sp,
                                               ),
                                               CustomElevatedButton(
                                                 backgroundColor:
@@ -389,8 +389,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   }
                                                 },
                                               ),
-                                              const SizedBox(
-                                                width: 2,
+                                              SizedBox(
+                                                width: 2.w,
                                               ),
                                               Container(
                                                 decoration: BoxDecoration(

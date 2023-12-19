@@ -301,7 +301,7 @@ class _MyLineChartState extends State<MyLineChart> {
                                   );
                                 },
                               )
-                            : const SizedBox()
+                            : const SizedBox(),
                       ],
                     ),
                     const SizedBox(height: 2),
@@ -520,6 +520,7 @@ class _MyLineChartState extends State<MyLineChart> {
                               ),
                             ),
                     ],
+                  
                   ],
                 ),
               ),
